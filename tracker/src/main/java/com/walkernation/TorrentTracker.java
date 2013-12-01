@@ -10,20 +10,17 @@ import com.turn.ttorrent.tracker.Tracker;
 
 public class TorrentTracker {
 
-	int port;
+	private final static String TORRENT_EXTENSION = ".torrent";
+
 	Tracker tracker;
 
 	public TorrentTracker(int port, String torrentsFolder) throws IOException {
-		this.port = port;
-		try {
-			tracker = new Tracker(new InetSocketAddress(6969));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		tracker = new Tracker(new InetSocketAddress(port));
+
 		FilenameFilter filter = new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.endsWith(".torrent");
+			public boolean accept(File torrentsFolder, String name) {
+				return name.endsWith(TORRENT_EXTENSION);
 			}
 		};
 

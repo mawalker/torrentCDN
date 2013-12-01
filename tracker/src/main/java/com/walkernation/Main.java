@@ -1,21 +1,27 @@
 package com.walkernation;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-
-import com.turn.ttorrent.tracker.Tracker;
 
 /**
  * Hello world!
  * 
  */
-public class App {
+public class Main {
 
-	public final static int port = 8080;
+	public static int port = 8080;
 
-	public final static String torrentsFolder = "";
+	public static String torrentsFolder = "./torrents/";
 
 	public static void main(String[] args) throws InterruptedException {
+
+		// TODO use Apache CLI
+		if (args.length > 0) {
+			torrentsFolder = args[0];
+		}
+
+		if (args.length > 1) {
+			port = Integer.valueOf(args[1]);
+		}
 
 		TorrentTracker tracker = null;
 		try {
@@ -34,6 +40,6 @@ public class App {
 			tracker.stopTracker();
 			System.out.println("Tracker Stopped");
 		}
-		
+
 	}
 }

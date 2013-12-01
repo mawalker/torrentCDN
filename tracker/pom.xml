@@ -7,6 +7,7 @@
   <version>1.0-SNAPSHOT</version>
   <name>torrentCDN</name>
   <url>http://maven.apache.org</url>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -14,47 +15,84 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-       <groupId>com.turn</groupId>
-       <artifactId>ttorrent</artifactId>
-       <version>1.3</version>
-       <scope>system</scope>
-       <systemPath>${project.basedir}/libs/ttorrent-1.3-SNAPSHOT.jar</systemPath>
+    <dependency> 
+      <groupId>com.turn</groupId>
+      <artifactId>ttorrent</artifactId>
+      <version>1.3</version>
     </dependency>
   </dependencies>
+  
 <build>
-<plugins>
-     <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.1</version>
-          <configuration>
-              <source>1.7</source>
-              <target>1.7</target>
-          </configuration>
-      </plugin>
-       <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <version>2.4</version>
-            <configuration>
-                <archive>
-                    <manifest>
-                        <addClasspath>true</addClasspath>
-                        <classpathPrefix>lib/</classpathPrefix>
-                        <mainClass>com.walkernation.App</mainClass>               
-                    </manifest>           
-                </archive>
-                <executions>
-                    <execution>
-                        <id>default-package</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </configuration>
-        </plugin>
-</plugins>
-</build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<mainClass>com.walkernation.Main</mainClass>
+				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<index>true</index>
+						<manifest>
+							<classpathPrefix>libs/</classpathPrefix>
+							<addClasspath>true</addClasspath>
+							<mainClass>com.walkernation.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			
+			
+			<plugin>
+				<groupId>org.eclipse.m2e</groupId>
+				<artifactId>lifecycle-mapping</artifactId>
+				<version>1.0.0</version>
+				<configuration>
+					<lifecycleMappingMetadata>
+						<pluginExecutions>
+							<!-- copy-dependency plugin -->
+							<pluginExecution>
+								<pluginExecutionFilter>
+									<groupId>org.apache.maven.plugins</groupId>
+									<artifactId>maven-dependency-plugin</artifactId>
+									<versionRange>[1.0.0,)</versionRange>
+									<goals>
+										<goal>copy-dependencies</goal>
+									</goals>
+								</pluginExecutionFilter>
+								<action>
+									<ignore />
+								</action>
+							</pluginExecution>
+						</pluginExecutions>
+					</lifecycleMappingMetadata>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
 </project>
