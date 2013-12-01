@@ -1,9 +1,10 @@
-package com.walkernation;
+package com.walkernation.torrentcdn.tracker;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Collection;
 
 import com.turn.ttorrent.tracker.TrackedTorrent;
 import com.turn.ttorrent.tracker.Tracker;
@@ -15,7 +16,7 @@ public class TorrentTracker {
 	Tracker tracker;
 
 	public TorrentTracker(int port, String torrentsFolder) throws IOException {
-		
+
 		tracker = new Tracker(new InetSocketAddress(port));
 
 		FilenameFilter filter = new FilenameFilter() {
@@ -35,6 +36,14 @@ public class TorrentTracker {
 
 	public void stopTracker() {
 		tracker.stop();
+	}
+
+	public Collection<TrackedTorrent> getTrackedTorrents() {
+		return tracker.getTrackedTorrents();
+	}
+
+	public void announceTorrent(TrackedTorrent torrent) {
+		tracker.announce(torrent);
 	}
 
 }
