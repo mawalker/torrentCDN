@@ -3,8 +3,6 @@ package com.walkernation.torrentcdn.client;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Observable;
-import java.util.Observer;
 
 import com.turn.ttorrent.client.Client;
 import com.turn.ttorrent.client.SharedTorrent;
