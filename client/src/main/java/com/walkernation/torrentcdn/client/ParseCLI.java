@@ -11,19 +11,19 @@ public class ParseCLI {
 
 	String args[];
 
-	private String port;
+	private String torrent;
 	private String directory;
 	private String time;
 
 	private boolean hasHelp;
 	private boolean hasDirectory;
-	private boolean hasPort;
+	private boolean hasTorrent;
 	private boolean hasTime;
 
 	private String helpOptionName = "help";
-	private String DirectoryOptionName = "dir";
-	private String PortOptionName = "port";
-	private String TimeOptionName = "time";
+	private String torrentOptionName = "torrent";
+	private String directoryOptionName = "directory";
+	private String timeOptionName = "time";
 
 	CommandLine cmd;
 
@@ -52,21 +52,24 @@ public class ParseCLI {
 		}
 
 		hasHelp = cmd.hasOption(helpOptionName);
-		hasDirectory = cmd.hasOption(DirectoryOptionName);
-		hasPort = cmd.hasOption(PortOptionName);
-		hasTime = cmd.hasOption(TimeOptionName);
+		hasDirectory = cmd.hasOption(directoryOptionName);
+		hasTorrent = cmd.hasOption(torrentOptionName);
+		hasTime = cmd.hasOption(timeOptionName);
 
 		if (hasHelp) {
 			printHelpString();
 			return false; // flag to start processing or not
 		}
 
-		if (hasDirectory && hasPort && hasTime) {
-			this.directory = cmd.getOptionValue(DirectoryOptionName);
-			this.port = cmd.getOptionValue(PortOptionName);
-			this.time = cmd.getOptionValue(TimeOptionName);
+		if (hasDirectory && hasTorrent && hasTime) {
+			this.directory = cmd.getOptionValue(directoryOptionName);
+			this.torrent = cmd.getOptionValue(torrentOptionName);
+			this.time = cmd.getOptionValue(timeOptionName);
 			parseCompleted = true;
 			return parseCompleted; // flag to start processing or not
+		} else{
+			System.out.println("Missing some required option.");
+			printHelpString();
 		}
 
 		return false;
@@ -77,12 +80,12 @@ public class ParseCLI {
 		return parseCompleted;
 	}
 
-	public String getDirectory() {
+	public String getOutputDirectory() {
 		return directory;
 	}
 
-	public String getPort() {
-		return port;
+	public String getTorrentPath() {
+		return torrent;
 	}
 
 	public String getTime() {
@@ -99,7 +102,7 @@ public class ParseCLI {
 
 		rValue = formatter.renderHelpString(createOptionsList());
 
-		rValue = "usage: TorrentCDN-Tracker.jar\n" + rValue;
+		rValue = "usage: TorrentCDN-Client.jar\n" + rValue;
 		return rValue;
 	}
 
@@ -109,13 +112,13 @@ public class ParseCLI {
 		Option helpOption = new Option("h", helpOptionName, false,
 				"print this message");
 
-		Option directoryOption = new Option("d", DirectoryOptionName, true,
-				"Directory of Torrents.");
+		Option directoryOption = new Option("d", directoryOptionName, true,
+				"Output Directory(Required)");
 
-		Option portOption = new Option("p", PortOptionName, true,
-				"Port of Tracker.");
-		Option timeOption = new Option("t", TimeOptionName, true,
-				"Time for Tracker to stay up (in Seconds).");
+		Option portOption = new Option("p", torrentOptionName, true,
+				"Path to Torrent file.(Required)");
+		Option timeOption = new Option("t", timeOptionName, true,
+				"Time for Seed after completion (in Seconds).(Required)");
 
 		options.addOption(helpOption);
 		options.addOption(directoryOption);

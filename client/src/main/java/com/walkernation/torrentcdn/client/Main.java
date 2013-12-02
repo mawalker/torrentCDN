@@ -13,13 +13,34 @@ import com.turn.ttorrent.client.SharedTorrent;
  * 
  */
 public class Main {
-	public static void main(String[] args) {
+
+	String torrentPath = "./../torrents/testfile1.txt.torrent";
+	String pathToOutputDirectory = "./../file-o/";
+	int time = 0;
+	
+	public Main(String[] args) {
+
+		ParseCLI cli = new ParseCLI();
+
+		cli.setArgs(args);
+		
+
+		boolean parseCompleted = cli.parseCommandLine();
+		if (parseCompleted) {
+
+			torrentPath = cli.getTorrentPath();
+			pathToOutputDirectory = cli.getOutputDirectory();
+			time = Integer.valueOf(cli.getTime());
+
+			System.out.println("dir:" + pathToOutputDirectory);
+			System.out.println("torrent:" + torrentPath);
+			System.out.println("time:" + time);
+
+		} else {
+			return;
+		}
 
 		TorrentClient tC = null;
-
-		String torrentPath = "./../torrents/testfile1.txt.torrent";
-		String pathToOutputDirectory = "./../file-o/";
-
 		SharedTorrent torrent = null;
 		try {
 			torrent = SharedTorrent.fromFile(new File(torrentPath), new File(
@@ -31,6 +52,7 @@ public class Main {
 		try {
 			if (torrent != null) {
 				tC = new TorrentClient(InetAddress.getLocalHost(), torrent);
+
 				tC.addObserver(new Observer() {
 
 					@Override
@@ -46,9 +68,14 @@ public class Main {
 		}
 
 		if (tC != null) {
-			tC.setSeedTimeAfterCompletion(15);
+			tC.setSeedTimeAfterCompletion(time);
 			// tC.download();
 			tC.blockingWaitForCompletion();
 		}
 	}
+
+	public static void main(String[] args) {
+		Main main = new Main(args);
+	}
+
 }

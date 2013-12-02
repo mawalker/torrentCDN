@@ -1,22 +1,42 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+
+
+
+
 Vagrant.configure("2") do |config|
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "precise"
+  #config.vm.box = "precise"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+  #config.vm.box_url = "http://files.vagrantup.com/precise32.box"
 
-  config.vm.network :forwarded_port, host: 8088, guest: 80
-  config.vm.network :forwarded_port, host: 9200, guest: 9200
-  config.vm.network :forwarded_port, host: 9292, guest: 9292
+  
+  config.vm.define :seeder do |seeder_config|
+    seeder_config.vm.box = "precise"
+    seeder_config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+    seeder_config.vm.network :hostonly, "192.168.1.4"
+  end
 
+  config.vm.define :leech do |leech_config|
+    leech_config.vm.box = "precise"
+    leech_config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+    leech_config.vm.network :hostonly, "192.168.1.8"
+  end
+
+  config.vm.define :tracker do |tracker_config|
+    tracker_config.vm.box = "precise"
+    tracker_config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+    tracker_config.vm.network :hostonly, "192.168.1.10"
+  end
+  
+  
   #config.vm.provision "puppet" do |puppet|
   #  puppet.module_path = "modules"
   #  puppet.options = "--verbose --debug"
