@@ -24,11 +24,11 @@ public class TorrentTracker {
 				return name.endsWith(TORRENT_EXTENSION);
 			}
 		};
-
-		File[] files = new File(torrentsFolder).listFiles(filter);
-		for (File file : files) {
-			System.out.println("file: name: " + file.getName());
-		}
+//
+//		File[] files = new File(torrentsFolder).listFiles(filter);
+//		for (File file : files) {
+//			System.out.println("file: name: " + file.getName());
+//		}
 		for (File f : new File(torrentsFolder).listFiles(filter)) {
 			tracker.announce(TrackedTorrent.load(f));
 		}
@@ -40,10 +40,6 @@ public class TorrentTracker {
 
 	public void stopTracker() {
 		tracker.stop();
-	}
-
-	public Collection<TrackedTorrent> getTrackedTorrents() {
-		return tracker.getTrackedTorrents();
 	}
 
 	public void announceTorrent(TrackedTorrent torrent) {
