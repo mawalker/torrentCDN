@@ -41,11 +41,11 @@ public class TestTracker extends TestCase {
 			System.out.println("file: name: " + file.getName());
 		}
 		TorrentTracker tracker = new TorrentTracker(8090, torrentsFolder);
-		tracker.startTracker();
+		tracker.start();
 
 		Thread.sleep(15 * 1000);
 
-		tracker.stopTracker();
+		tracker.stop();
 	}
 
 }

@@ -1,6 +1,11 @@
 package com.walkernation.torrentcdn.tracker;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
+
+import com.turn.ttorrent.tracker.TrackedPeer;
+import com.turn.ttorrent.tracker.TrackedTorrent;
 
 /**
  * Hello world!
@@ -46,16 +51,31 @@ public class Main {
 
 		if (tracker != null) {
 			System.out.println("Tracker Created");
-			tracker.startTracker();
+			tracker.start();
 			System.out.println("Tracker Started");
 		}
 
 		// let the Tracker run for as long as it is needed
-		Thread.sleep(time * 1000);
+		// Thread.sleep(time * 1000);
+
+		for (int i = 0; i < time; i++) {
+			Thread.sleep(1000);
+			// Collection<TrackedTorrent> trackedTorrents = tracker
+			// .getTrackedTorrents();
+			// for (TrackedTorrent trackedTorrent : trackedTorrents) {
+			// Map<String, TrackedPeer> peers= trackedTorrent.getPeers();
+			// int trackerCount = peers.size();
+			// if (trackerCount != 0) {
+			// System.out.println("" + trackedTorrent.getName() + " has  "
+			// + trackerCount + " tracker count.");
+			// }
+			// }
+
+		}
 
 		// when no longer needed report stopped.
 		if (tracker != null) {
-			tracker.stopTracker();
+			tracker.stop();
 			System.out.println("Tracker Stopped");
 		}
 	}
