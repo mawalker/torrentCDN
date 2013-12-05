@@ -25,6 +25,10 @@ public class TorrentTracker {
 			}
 		};
 
+		File[] files = new File(torrentsFolder).listFiles(filter);
+		for (File file : files) {
+			System.out.println("file: name: " + file.getName());
+		}
 		for (File f : new File(torrentsFolder).listFiles(filter)) {
 			tracker.announce(TrackedTorrent.load(f));
 		}

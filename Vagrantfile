@@ -2,10 +2,58 @@
 # vi: set ft=ruby :
 
 
-
+boxes = [
+    # Tracker
+    { 
+        :name => :tracker, 
+        :ip => "192.168.42.100",
+        :pupp => "tracker.pp",
+        :ssh_port => "2080"
+        #:jar => 'java -jar Torrent-tracker.jar - [FINISH ME]
+    },
+    # Client to Seed
+    { 
+        :name => :seeder,
+        :ip => "192.168.42.80",
+        :pupp => "seeder.pp",
+        :ssh_port => "2081"
+    },
+    # Client to Download
+    { 
+        :name => :leech,
+        :ip => "192.168.42.40",
+        :pupp => "leech.pp",
+        :ssh_port => "2082"
+    }
+]
 
 
 Vagrant.configure("2") do |config|
+    boxes.each do |opts|
+        config.vm.define opts[:name] do |config|
+            # Box basics
+            config.vm.box = "precise"
+            config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+            config.vm.network :private_network, ip: opts[:ip]
+            #config.ssh.port = opts[:ssh_port]
+            
+            
+        end
+        
+        
+		config.vm.provision :puppet do |puppet|
+			puppet.manifests_path = "manifests"
+			puppet.manifest_file = opts[:pupp]
+		end
+        
+    end
+    
+	
+    
+end
+
+
+#Vagrant.configure("2") do |config|
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
@@ -18,23 +66,23 @@ Vagrant.configure("2") do |config|
   #config.vm.box_url = "http://files.vagrantup.com/precise32.box"
 
   
-  config.vm.define :seeder do |seeder_config|
-    seeder_config.vm.box = "precise"
-    seeder_config.vm.box_url = "http://files.vagrantup.com/precise32.box"
-    seeder_config.vm.network :hostonly, "192.168.1.4"
-  end
+#  config.vm.define :seeder do |seeder_config|
+#    seeder_config.vm.box = "precise"
+#    seeder_config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+#    seeder_config.vm.network :hostonly, "192.168.1.4"
+#  end
 
-  config.vm.define :leech do |leech_config|
-    leech_config.vm.box = "precise"
-    leech_config.vm.box_url = "http://files.vagrantup.com/precise32.box"
-    leech_config.vm.network :hostonly, "192.168.1.8"
-  end
+#  config.vm.define :leech do |leech_config|
+#    leech_config.vm.box = "precise"
+#    leech_config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+#    leech_config.vm.network :hostonly, "192.168.1.8"
+#  end
 
-  config.vm.define :tracker do |tracker_config|
-    tracker_config.vm.box = "precise"
-    tracker_config.vm.box_url = "http://files.vagrantup.com/precise32.box"
-    tracker_config.vm.network :hostonly, "192.168.1.10"
-  end
+#  config.vm.define :tracker do |tracker_config|
+#    tracker_config.vm.box = "precise"
+#    tracker_config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+#    tracker_config.vm.network :hostonly, "192.168.1.10"
+#  end
   
   
   #config.vm.provision "puppet" do |puppet|
@@ -142,4 +190,4 @@ Vagrant.configure("2") do |config|
   # chef-validator, unless you changed the configuration.
   #
   #   chef.validation_client_name = "ORGNAME-validator"
-end
+#end
