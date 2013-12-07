@@ -47,7 +47,7 @@ by executing:
 ```bash
 . ./requiredToRun/installReqLibraryToMaven.sh
 ```
-
+This requirement should be lifted soon, as I've discussed with the library's creator about them adding their work to a maven repository. That work is being done now, but is still incomplete.
 ___
 
 
